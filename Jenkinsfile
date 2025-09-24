@@ -2,24 +2,31 @@ pipeline {
     agent any
 
     stages {
-        stage('Check Java Version') {
-            steps {
-                sh 'java -version'
-                sh 'javac -version'
-            }
-        }
-
-/*         stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Build') {
+        stage('Prepare') {
             steps {
                 sh 'chmod +x ./mvnw'
-                sh './mvnw clean install -DskipTests'
             }
-        } */
+        }
+        stage('Build') {
+            steps {
+                sh './mvnw clean compile'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './mvnw test -DskipTests'  // Skip tests
+            }
+        }
+        stage('Package') {
+            steps {
+                sh './mvnw package -DskipTests'  // Skip tests during packaging too
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+        }
     }
 }
