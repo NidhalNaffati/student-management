@@ -2,7 +2,14 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Check Java Version') {
+            steps {
+                sh 'java -version'
+                sh 'javac -version'
+            }
+        }
+
+/*         stage('Checkout') {
             steps {
                 checkout scm
             }
@@ -13,6 +20,6 @@ pipeline {
                 sh 'chmod +x ./mvnw'
                 sh './mvnw clean install -DskipTests'
             }
-        }
+        } */
     }
 }
