@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        jdk 'jdk17'  // Make sure this JDK is configured in Jenkins
+    }
+
     stages {
         stage('Prepare') {
             steps {
@@ -14,12 +18,12 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh './mvnw test -DskipTests'  // Skip tests
+                sh './mvnw test'
             }
         }
         stage('Package') {
             steps {
-                sh './mvnw package -DskipTests'  // Skip tests during packaging too
+                sh './mvnw package -DskipTests'
             }
         }
     }
